@@ -3,224 +3,416 @@
 <head>
 <meta charset="UTF-8">
 <title>여행지 정하기</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 
-body{
-font-family:Arial;
-background:#f4f4f4;
-padding:30px;
+:root {
+  --pink: #ff6b9d;
+  --pink-light: #ffb3d1;
+  --pink-soft: #fff0f5;
+  --deep: #4a1530;
+  --white: #ffffff;
+  --shadow: rgba(255,107,157,0.15);
 }
 
-.container{
-max-width:800px;
-margin:auto;
-background:white;
-padding:20px;
-border-radius:12px;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--pink-soft);
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,179,209,0.3) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255,200,220,0.2) 0%, transparent 40%);
 }
 
-.row{
-display:grid;
-grid-template-columns:80px 100px 1fr;
-gap:10px;
-margin-bottom:10px;
-align-items:center;
+.container {
+  max-width: 680px;
+  margin: auto;
 }
 
-button{
-padding:8px;
-border:none;
-background:#333;
-color:white;
-border-radius:6px;
-cursor:pointer;
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeDown 0.6s ease both;
 }
 
-.result{
-background:#eee;
-padding:8px;
-border-radius:6px;
+.header h1 {
+  font-family: 'Abril Fatface', serif;
+  font-size: 3rem;
+  color: var(--deep);
+  letter-spacing: -1px;
+  line-height: 1;
 }
 
-.links a{
-margin-right:10px;
-font-size:14px;
+.header h1 span { color: var(--pink); }
+
+.header p {
+  margin-top: 10px;
+  color: #c47a99;
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
-.section{
-margin-top:20px;
+.header-img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 10px 40px var(--shadow);
+  display: block;
 }
+
+.friends-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.friend-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: 52px 120px 1fr;
+  gap: 14px;
+  align-items: center;
+  box-shadow: 0 2px 16px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeUp 0.5s ease both;
+}
+
+.friend-card:nth-child(1) { animation-delay: 0.1s; }
+.friend-card:nth-child(2) { animation-delay: 0.2s; }
+.friend-card:nth-child(3) { animation-delay: 0.3s; }
+
+.friend-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px var(--shadow);
+}
+
+.friend-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.avatar-1 { background: linear-gradient(135deg, #ff6b9d, #ffb3d1); }
+.avatar-2 { background: linear-gradient(135deg, #f0427f, #ff85b5); }
+.avatar-3 { background: linear-gradient(135deg, #e0306e, #ff6b9d); }
+
+.friend-info { display: flex; flex-direction: column; gap: 6px; }
+
+.friend-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--deep);
+}
+
+.pick-btn {
+  padding: 9px 18px;
+  border: none;
+  background: var(--pink);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.pick-btn:hover { background: #e0306e; transform: scale(1.04); }
+.pick-btn:active { transform: scale(0.97); }
+
+.result-text {
+  font-size: 0.88rem;
+  color: #aab8c2;
+  font-weight: 400;
+}
+
+.result-text .city-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--deep);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.map-links { display: flex; gap: 6px; margin-top: 4px; }
+
+.map-links a {
+  font-size: 0.72rem;
+  color: white !important;
+  text-decoration: none;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.map-links a:hover { opacity: 0.8; }
+.link-google { background: var(--pink); }
+.link-kakao { background: #f5c800; color: #4a1530 !important; }
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 24px;
+  animation: fadeUp 0.5s 0.4s ease both;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,107,157,0.2);
+}
+
+.divider span {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--pink-light);
+  font-weight: 500;
+}
+
+.result-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  animation: fadeUp 0.5s 0.5s ease both;
+}
+
+.result-card {
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 2px 16px var(--shadow);
+}
+
+.result-card.highlight { background: var(--pink); }
+
+.card-label {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #c47a99;
+}
+
+.result-card.highlight .card-label { color: rgba(255,255,255,0.7); }
+
+.card-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--deep);
+  line-height: 1.6;
+}
+
+.result-card.highlight .card-value { color: white; }
+
+.card-value .big { font-size: 1.3rem; display: block; margin-bottom: 6px; }
+
+.nearby-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,107,157,0.1);
+}
+.nearby-item:last-child { border-bottom: none; }
+
+.nearby-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--pink);
+  flex-shrink: 0;
+}
+
+.nearby-item a {
+  color: var(--deep);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.nearby-item a:hover { color: var(--pink); }
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop {
+  0% { transform: scale(0.9); opacity: 0; }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.pop { animation: pop 0.35s ease both; }
 
 </style>
-
 </head>
-
 <body>
 
 <div class="container">
 
-<h2>여행지 정하기</h2>
-<img src="https://haileyparkdevelopment.github.io/whereyouwannago/main.png">
+  <div class="header">
+    <h1>Where <span>to</span> Go?</h1>
+    <p>어디로 갈까용</p>
+    <img src="main.png" class="header-img" alt="여행">
+  </div>
 
-<div class="row">
-<div>채니</div>
-<button onclick="pickFriend(1)">Where?</button>
-<div id="friend1" class="result"></div>
-</div>
+  <div class="friends-section">
 
-<div class="row">
-<div>져니</div>
-<button onclick="pickFriend(2)">Where?</button>
-<div id="friend2" class="result"></div>
-</div>
+    <div class="friend-card">
+      <div class="friend-avatar avatar-1">챈</div>
+      <div class="friend-info">
+        <div class="friend-name">채니</div>
+        <button class="pick-btn" onclick="pickFriend(1)">Where? ✦</button>
+      </div>
+      <div class="result-text" id="r1">아직 미정</div>
+    </div>
 
-<div class="row">
-<div>셔니</div>
-<button onclick="pickFriend(3)">Where?</button>
-<div id="friend3" class="result"></div>
-</div>
+    <div class="friend-card">
+      <div class="friend-avatar avatar-2">젼</div>
+      <div class="friend-info">
+        <div class="friend-name">져니</div>
+        <button class="pick-btn" onclick="pickFriend(2)">Where? ✦</button>
+      </div>
+      <div class="result-text" id="r2">아직 미정</div>
+    </div>
 
-<div class="section">
+    <div class="friend-card">
+      <div class="friend-avatar avatar-3">션</div>
+      <div class="friend-info">
+        <div class="friend-name">셔니</div>
+        <button class="pick-btn" onclick="pickFriend(3)">Where? ✦</button>
+      </div>
+      <div class="result-text" id="r3">아직 미정</div>
+    </div>
 
-<div class="row">
-<div>중간지</div>
-<div></div>
-<div id="middle" class="result">-</div>
-</div>
+  </div>
 
-<div class="row">
-<div>근처도시</div>
-<div></div>
-<div id="nearby" class="result">-</div>
-</div>
+  <div class="divider"><span>결과</span></div>
 
-</div>
+  <div class="result-section">
+
+    <div class="result-card highlight">
+      <div class="card-label">📍 중간 여행지</div>
+      <div class="card-value" id="middle">-</div>
+    </div>
+
+    <div class="result-card">
+      <div class="card-label">🗺 근처 도시</div>
+      <div class="card-value" id="nearby">-</div>
+    </div>
+
+  </div>
 
 </div>
 
 <script>
 
 const cities = [
-
-{name:"서울",lat:37.5665,lng:126.9780},
-{name:"부산",lat:35.1796,lng:129.0756},
-{name:"대구",lat:35.8714,lng:128.6014},
-{name:"인천",lat:37.4563,lng:126.7052},
-{name:"광주",lat:35.1595,lng:126.8526},
-{name:"대전",lat:36.3504,lng:127.3845},
-{name:"울산",lat:35.5384,lng:129.3114},
-{name:"수원",lat:37.2636,lng:127.0286},
-{name:"성남",lat:37.4200,lng:127.1265},
-{name:"용인",lat:37.2411,lng:127.1776},
-{name:"춘천",lat:37.8813,lng:127.7298},
-{name:"강릉",lat:37.7519,lng:128.8761},
-{name:"청주",lat:36.6424,lng:127.4890},
-{name:"천안",lat:36.8151,lng:127.1139},
-{name:"전주",lat:35.8242,lng:127.1480},
-{name:"목포",lat:34.8118,lng:126.3922},
-{name:"여수",lat:34.7604,lng:127.6622},
-{name:"포항",lat:36.0190,lng:129.3435},
-{name:"경주",lat:35.8562,lng:129.2247},
-{name:"창원",lat:35.2285,lng:128.6811},
-{name:"김해",lat:35.2285,lng:128.8890},
-{name:"제주",lat:33.4996,lng:126.5312}
-
+  {name:"서울",lat:37.5665,lng:126.9780},
+  {name:"부산",lat:35.1796,lng:129.0756},
+  {name:"대구",lat:35.8714,lng:128.6014},
+  {name:"인천",lat:37.4563,lng:126.7052},
+  {name:"광주",lat:35.1595,lng:126.8526},
+  {name:"대전",lat:36.3504,lng:127.3845},
+  {name:"울산",lat:35.5384,lng:129.3114},
+  {name:"수원",lat:37.2636,lng:127.0286},
+  {name:"성남",lat:37.4200,lng:127.1265},
+  {name:"용인",lat:37.2411,lng:127.1776},
+  {name:"춘천",lat:37.8813,lng:127.7298},
+  {name:"강릉",lat:37.7519,lng:128.8761},
+  {name:"청주",lat:36.6424,lng:127.4890},
+  {name:"천안",lat:36.8151,lng:127.1139},
+  {name:"전주",lat:35.8242,lng:127.1480},
+  {name:"목포",lat:34.8118,lng:126.3922},
+  {name:"여수",lat:34.7604,lng:127.6622},
+  {name:"포항",lat:36.0190,lng:129.3435},
+  {name:"경주",lat:35.8562,lng:129.2247},
+  {name:"창원",lat:35.2285,lng:128.6811},
+  {name:"김해",lat:35.2285,lng:128.8890},
+  {name:"제주",lat:33.4996,lng:126.5312}
 ];
 
-const friendData={
-1:null,
-2:null,
-3:null
-};
+const friendData = { 1: null, 2: null, 3: null };
+const resultIds = { 1: "r1", 2: "r2", 3: "r3" };
 
-function randomCity(){
-
-return cities[Math.floor(Math.random()*cities.length)];
-
+function mapLinks(city) {
+  const google = `https://www.google.com/maps/search/?api=1&query=${city.lat},${city.lng}`;
+  const kakao = `https://map.kakao.com/link/map/${city.name},${city.lat},${city.lng}`;
+  return `<div class="map-links">
+    <a href="${google}" target="_blank" class="link-google">Google</a>
+    <a href="${kakao}" target="_blank" class="link-kakao">Kakao</a>
+  </div>`;
 }
 
-function pickFriend(n){
-
-const city=randomCity();
-
-friendData[n]=city;
-
-document.getElementById("friend"+n).innerHTML=
-city.name + mapLinks(city);
-
-updateMiddle();
-
+function pickFriend(n) {
+  const city = cities[Math.floor(Math.random() * cities.length)];
+  friendData[n] = city;
+  const el = document.getElementById(resultIds[n]);
+  el.innerHTML = `<span class="city-name">${city.name}</span>${mapLinks(city)}`;
+  el.classList.remove("pop");
+  void el.offsetWidth;
+  el.classList.add("pop");
+  updateMiddle();
 }
 
-function updateMiddle(){
+function updateMiddle() {
+  if (!friendData[1] || !friendData[2] || !friendData[3]) return;
 
-if(!friendData[1]||!friendData[2]||!friendData[3]) return;
+  const lat = (friendData[1].lat + friendData[2].lat + friendData[3].lat) / 3;
+  const lng = (friendData[1].lng + friendData[2].lng + friendData[3].lng) / 3;
 
-const lat=(friendData[1].lat+friendData[2].lat+friendData[3].lat)/3;
-const lng=(friendData[1].lng+friendData[2].lng+friendData[3].lng)/3;
+  let best = null, minD = 999999;
+  cities.forEach(c => {
+    const d = Math.sqrt(Math.pow(lat - c.lat, 2) + Math.pow(lng - c.lng, 2));
+    if (d < minD) { minD = d; best = c; }
+  });
 
-let middleCity=null;
-let minDist=999999;
+  const el = document.getElementById("middle");
+  el.innerHTML = `<span class="big">${best.name}</span>${mapLinks(best)}`;
+  el.classList.remove("pop");
+  void el.offsetWidth;
+  el.classList.add("pop");
 
-cities.forEach(city=>{
+  const sorted = [...cities].sort((a, b) =>
+    Math.sqrt(Math.pow(best.lat-a.lat,2)+Math.pow(best.lng-a.lng,2)) -
+    Math.sqrt(Math.pow(best.lat-b.lat,2)+Math.pow(best.lng-b.lng,2))
+  ).slice(1, 4);
 
-const d=distance(lat,lng,city.lat,city.lng);
-
-if(d<minDist){
-minDist=d;
-middleCity=city;
-}
-
-});
-
-document.getElementById("middle").innerHTML=
-middleCity.name + mapLinks(middleCity);
-
-findNearby(middleCity);
-
-}
-
-function findNearby(base){
-
-const sorted=[...cities].sort((a,b)=>{
-
-return distance(base.lat,base.lng,a.lat,a.lng)-
-distance(base.lat,base.lng,b.lat,b.lng);
-
-});
-
-const near=sorted.slice(1,4);
-
-document.getElementById("nearby").innerHTML=
-near.map(c=>c.name+mapLinks(c)).join("<br>");
-
-}
-
-function distance(lat1,lng1,lat2,lng2){
-
-return Math.sqrt(
-Math.pow(lat1-lat2,2)+Math.pow(lng1-lng2,2)
-);
-
-}
-
-function mapLinks(city){
-
-const google=`https://www.google.com/maps/search/?api=1&query=${city.lat},${city.lng}`;
-
-const kakao=`https://map.kakao.com/link/map/${city.name},${city.lat},${city.lng}`;
-
-return `
-<div class="links">
-<a href="${google}" target="_blank">GoogleMap</a>
-<a href="${kakao}" target="_blank">KakaoMap</a>
-</div>
-`;
-
+  document.getElementById("nearby").innerHTML = sorted.map(c =>
+    `<div class="nearby-item">
+      <div class="nearby-dot"></div>
+      <a href="https://map.kakao.com/link/map/${c.name},${c.lat},${c.lng}" target="_blank">${c.name}</a>
+    </div>`
+  ).join("");
 }
 
 </script>
-
 </body>
 </html>

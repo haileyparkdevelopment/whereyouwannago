@@ -1,224 +1,226 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8">
-    <title>여행지 정하기</title>
-    <style>
-      body {
-        font-family: Arial;
-        background: #f4f4f4;
-        padding: 30px;
-      }
+<head>
+<meta charset="UTF-8">
+<title>여행지 정하기</title>
 
-      .container {
-        max-width: 800px;
-        margin: auto;
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-      }
+<style>
 
-      .row {
-        display: grid;
-        grid-template-columns: 80px 80px 1fr;
-        gap: 10px;
-        margin-bottom: 10px;
-        align-items: center;
-      }
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:30px;
+}
 
-      button {
-        padding: 8px;
-        border: none;
-        background: #333;
-        color: white;
-        border-radius: 6px;
-        cursor: pointer;
-      }
+.container{
+max-width:800px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:12px;
+}
 
-      .result {
-        background: #eee;
-        padding: 8px;
-        border-radius: 6px;
-      }
+.row{
+display:grid;
+grid-template-columns:80px 100px 1fr;
+gap:10px;
+margin-bottom:10px;
+align-items:center;
+}
 
-      #map {
-        width: 100%;
-        height: 420px;
-        margin-top: 20px;
-        border-radius: 12px;
-      }
+button{
+padding:8px;
+border:none;
+background:#333;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
 
-      .section {
-        margin-top: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>여행지 정하기</h2>
-      <div class="row">
-        <div>채니</div>
-        <button onclick="pickFriend(1)">Where?</button>
-        <div id="friend1" class="result"></div>
-      </div>
-      <div class="row">
-        <div>져니</div>
-        <button onclick="pickFriend(2)">Where?</button>
-        <div id="friend2" class="result"></div>
-      </div>
-      <div class="row">
-        <div>셔니</div>
-        <button onclick="pickFriend(3)">Where?</button>
-        <div id="friend3" class="result"></div>
-      </div>
-      <div class="section">
-        <div class="row">
-          <div>중간지</div>
-          <div></div>
-          <div id="middle" class="result">-</div>
-        </div>
-        <div class="row">
-          <div>근처도시</div>
-          <div></div>
-          <div id="nearby" class="result">-</div>
-        </div>
-      </div>
-      <div id="map"></div>
-    </div>
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0cb518c4181aa3da5d45befafb532d7b&libraries=services"></script>
-    <script>
-        const geocoder = new kakao.maps.services.Geocoder();
-        const places = new kakao.maps.services.Places();
-        let map;
-        let markers = [];
-        const friendData = {
-          1: null,
-          2: null,
-          3: null
-        };
+.result{
+background:#eee;
+padding:8px;
+border-radius:6px;
+}
 
-        function initMap() {
-          const container = document.getElementById("map");
-          map = new kakao.maps.Map(container, {
-            center: new kakao.maps.LatLng(36.5, 127.8),
-            level: 13
-          });
-        }
-        initMap();
-        const friendMarkerImage = new kakao.maps.MarkerImage("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png", new kakao.maps.Size(24, 35));
-        const middleMarkerImage = new kakao.maps.MarkerImage("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png", new kakao.maps.Size(24, 35));
-        const cityMarkerImage = new kakao.maps.MarkerImage("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_blue.png", new kakao.maps.Size(24, 35));
+.links a{
+margin-right:10px;
+font-size:14px;
+}
 
-        function clearMarkers() {
-          markers.forEach(m => m.setMap(null));
-          markers = [];
-        }
+.section{
+margin-top:20px;
+}
 
-        function addMarker(lat, lng, image, text) {
-          const marker = new kakao.maps.Marker({
-            map: map,
-            position: new kakao.maps.LatLng(lat, lng),
-            image: image
-          });
-          markers.push(marker);
-          if (text) {
-            const info = new kakao.maps.InfoWindow({
-              content: `
-				<div style="padding:5px;font-size:12px">${text}</div>`
-            });
-            info.open(map, marker);
-          }
-        }
+</style>
 
-        function randomCoord() {
-          const lat = 33 + Math.random() * (38.6 - 33);
-          const lng = 126 + Math.random() * (129.6 - 126);
-          return {
-            lat,
-            lng
-          };
-        }
+</head>
 
-        function coordToAddress(lat, lng) {
-          return new Promise((resolve, reject) => {
-            geocoder.coord2Address(lng, lat, (result, status) => {
-              if (status === kakao.maps.services.Status.OK) {
-                const addr = result[0].road_address?.address_name || result[0].address.address_name;
-                resolve(addr);
-              } else {
-                reject();
-              }
-            });
-          });
-        }
-        async function getRandomAddress() {
-          for (let i = 0; i < 15; i++) {
-            try {
-              const coord = randomCoord();
-              const address = await coordToAddress(coord.lat, coord.lng);
-              return {
-                lat: coord.lat,
-                lng: coord.lng,
-                address
-              };
-            } catch (e) {}
-          }
-          throw "fail";
-        }
-        window.pickFriend = async function(n) {
-          const el = document.getElementById("friend" + n);
-          el.innerText = "찾는중...";
-          try {
-            const data = await getRandomAddress();
-            friendData[n] = data;
-            el.innerText = data.address;
-            addMarker(data.lat, data.lng, friendMarkerImage, data.address);
-            updateMiddle();
-          } catch {
-            el.innerText = "실패 다시";
-          }
-        }
-        async function updateMiddle() {
-          if (!friendData[1] || !friendData[2] || !friendData[3]) return;
-          const midLat = (friendData[1].lat + friendData[2].lat + friendData[3].lat) / 3;
-          const midLng = (friendData[1].lng + friendData[2].lng + friendData[3].lng) / 3;
-          const address = await coordToAddress(midLat, midLng);
-          document.getElementById("middle").innerText = address;
-          addMarker(midLat, midLng, middleMarkerImage, "중간지");
-          map.setCenter(new kakao.maps.LatLng(midLat, midLng));
-          findNearbyCities(midLat, midLng);
-        }
+<body>
 
-        function findNearbyCities(lat, lng) {
-          places.keywordSearch("시청", (data, status) => {
-            if (status !== kakao.maps.services.Status.OK) return;
-            const cities = [];
-            const shown = new Set();
-            data.forEach(place => {
-              if (cities.length >= 3) return;
-              const addr = place.address_name;
-              const parts = addr.split(" ");
-              if (parts.length > 1) {
-                const city = parts[0] + " " + parts[1];
-                if (!shown.has(city)) {
-                  shown.add(city);
-                  cities.push(city);
-                }
-              }
-            });
-            document.getElementById("nearby").innerText = cities.join("\n");
-            cities.forEach(city => {
-              geocoder.addressSearch(city, (result, status) => {
-                if (status === kakao.maps.services.Status.OK) {
-                  addMarker(result[0].y, result[0].x, cityMarkerImage, city);
-                }
-              });
-            });
-          }, {
-            location: new kakao.maps.LatLng(lat, lng),
-            radius: 20000
-          });
-        }
-    </script>
-  </body>
+<div class="container">
+
+<h2>여행지 정하기</h2>
+<img src="https://haileyparkdevelopment.github.io/whereyouwannago/main.png">
+
+<div class="row">
+<div>채니</div>
+<button onclick="pickFriend(1)">Where?</button>
+<div id="friend1" class="result"></div>
+</div>
+
+<div class="row">
+<div>져니</div>
+<button onclick="pickFriend(2)">Where?</button>
+<div id="friend2" class="result"></div>
+</div>
+
+<div class="row">
+<div>셔니</div>
+<button onclick="pickFriend(3)">Where?</button>
+<div id="friend3" class="result"></div>
+</div>
+
+<div class="section">
+
+<div class="row">
+<div>중간지</div>
+<div></div>
+<div id="middle" class="result">-</div>
+</div>
+
+<div class="row">
+<div>근처도시</div>
+<div></div>
+<div id="nearby" class="result">-</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const cities = [
+
+{name:"서울",lat:37.5665,lng:126.9780},
+{name:"부산",lat:35.1796,lng:129.0756},
+{name:"대구",lat:35.8714,lng:128.6014},
+{name:"인천",lat:37.4563,lng:126.7052},
+{name:"광주",lat:35.1595,lng:126.8526},
+{name:"대전",lat:36.3504,lng:127.3845},
+{name:"울산",lat:35.5384,lng:129.3114},
+{name:"수원",lat:37.2636,lng:127.0286},
+{name:"성남",lat:37.4200,lng:127.1265},
+{name:"용인",lat:37.2411,lng:127.1776},
+{name:"춘천",lat:37.8813,lng:127.7298},
+{name:"강릉",lat:37.7519,lng:128.8761},
+{name:"청주",lat:36.6424,lng:127.4890},
+{name:"천안",lat:36.8151,lng:127.1139},
+{name:"전주",lat:35.8242,lng:127.1480},
+{name:"목포",lat:34.8118,lng:126.3922},
+{name:"여수",lat:34.7604,lng:127.6622},
+{name:"포항",lat:36.0190,lng:129.3435},
+{name:"경주",lat:35.8562,lng:129.2247},
+{name:"창원",lat:35.2285,lng:128.6811},
+{name:"김해",lat:35.2285,lng:128.8890},
+{name:"제주",lat:33.4996,lng:126.5312}
+
+];
+
+const friendData={
+1:null,
+2:null,
+3:null
+};
+
+function randomCity(){
+
+return cities[Math.floor(Math.random()*cities.length)];
+
+}
+
+function pickFriend(n){
+
+const city=randomCity();
+
+friendData[n]=city;
+
+document.getElementById("friend"+n).innerHTML=
+city.name + mapLinks(city);
+
+updateMiddle();
+
+}
+
+function updateMiddle(){
+
+if(!friendData[1]||!friendData[2]||!friendData[3]) return;
+
+const lat=(friendData[1].lat+friendData[2].lat+friendData[3].lat)/3;
+const lng=(friendData[1].lng+friendData[2].lng+friendData[3].lng)/3;
+
+let middleCity=null;
+let minDist=999999;
+
+cities.forEach(city=>{
+
+const d=distance(lat,lng,city.lat,city.lng);
+
+if(d<minDist){
+minDist=d;
+middleCity=city;
+}
+
+});
+
+document.getElementById("middle").innerHTML=
+middleCity.name + mapLinks(middleCity);
+
+findNearby(middleCity);
+
+}
+
+function findNearby(base){
+
+const sorted=[...cities].sort((a,b)=>{
+
+return distance(base.lat,base.lng,a.lat,a.lng)-
+distance(base.lat,base.lng,b.lat,b.lng);
+
+});
+
+const near=sorted.slice(1,4);
+
+document.getElementById("nearby").innerHTML=
+near.map(c=>c.name+mapLinks(c)).join("<br>");
+
+}
+
+function distance(lat1,lng1,lat2,lng2){
+
+return Math.sqrt(
+Math.pow(lat1-lat2,2)+Math.pow(lng1-lng2,2)
+);
+
+}
+
+function mapLinks(city){
+
+const google=`https://www.google.com/maps/search/?api=1&query=${city.lat},${city.lng}`;
+
+const kakao=`https://map.kakao.com/link/map/${city.name},${city.lat},${city.lng}`;
+
+return `
+<div class="links">
+<a href="${google}" target="_blank">GoogleMap</a>
+<a href="${kakao}" target="_blank">KakaoMap</a>
+</div>
+`;
+
+}
+
+</script>
+
+</body>
 </html>

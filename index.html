@@ -1,556 +1,450 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-  <meta charset="UTF-8">
-  <title>여행지 정하기</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --pink: #ff6b9d;
-      --pink-light: #ffb3d1;
-      --pink-soft: #fff0f5;
-      --deep: #4a1530;
-      --white: #ffffff;
-      --shadow: rgba(255, 107, 157, 0.15);
-    }
+<meta charset="UTF-8">
+<title>여행지 정하기</title>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+:root {
+  --pink: #ff6b9d;
+  --pink-light: #ffb3d1;
+  --pink-soft: #fff0f5;
+  --deep: #4a1530;
+  --white: #ffffff;
+  --shadow: rgba(255,107,157,0.15);
+}
 
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background: var(--pink-soft);
-      min-height: 100vh;
-      padding: 40px 20px;
-      background-image:
-        radial-gradient(circle at 10% 20%, rgba(255, 179, 209, 0.3) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(255, 200, 220, 0.2) 0%, transparent 40%);
-    }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .container {
-      max-width: 680px;
-      margin: auto;
-    }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--pink-soft);
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,179,209,0.3) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255,200,220,0.2) 0%, transparent 40%);
+}
 
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-      animation: fadeDown 0.6s ease both;
-    }
+.container {
+  max-width: 680px;
+  margin: auto;
+}
 
-    .header h1 {
-      font-family: 'Abril Fatface', serif;
-      font-size: 3rem;
-      color: var(--deep);
-      letter-spacing: -1px;
-      line-height: 1;
-    }
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeDown 0.6s ease both;
+}
 
-    .header h1 span {
-      color: var(--pink);
-    }
+.header h1 {
+  font-family: 'Abril Fatface', serif;
+  font-size: 3rem;
+  color: var(--deep);
+  letter-spacing: -1px;
+  line-height: 1;
+}
 
-    .header p {
-      margin-top: 10px;
-      color: #c47a99;
-      font-size: 0.85rem;
-      font-weight: 300;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
+.header h1 span { color: var(--pink); }
 
-    .header-img {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 20px;
-      margin-top: 20px;
-      box-shadow: 0 10px 40px var(--shadow);
-      display: block;
-    }
+.header p {
+  margin-top: 10px;
+  color: #c47a99;
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
 
-    /* Friend Cards */
-    .friends-section {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 32px;
-    }
+.header-img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 10px 40px var(--shadow);
+  display: block;
+}
 
-    .friend-card {
-      background: white;
-      border-radius: 16px;
-      padding: 18px 22px;
-      display: grid;
-      grid-template-columns: 52px 120px 1fr;
-      gap: 14px;
-      align-items: center;
-      box-shadow: 0 2px 16px var(--shadow);
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: fadeUp 0.5s ease both;
-    }
+/* Friend Cards */
+.friends-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
 
-    .friend-card:nth-child(1) {
-      animation-delay: 0.1s;
-    }
+.friend-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: 52px 120px 1fr;
+  gap: 14px;
+  align-items: center;
+  box-shadow: 0 2px 16px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeUp 0.5s ease both;
+}
 
-    .friend-card:nth-child(2) {
-      animation-delay: 0.2s;
-    }
+.friend-card:nth-child(1) { animation-delay: 0.1s; }
+.friend-card:nth-child(2) { animation-delay: 0.2s; }
+.friend-card:nth-child(3) { animation-delay: 0.3s; }
 
-    .friend-card:nth-child(3) {
-      animation-delay: 0.3s;
-    }
+.friend-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px var(--shadow);
+}
 
-    .friend-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px var(--shadow);
-    }
+.friend-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
 
-    .friend-avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: white;
-      flex-shrink: 0;
-    }
+.avatar-1 { background: linear-gradient(135deg, #ff6b9d, #ffb3d1); }
+.avatar-2 { background: linear-gradient(135deg, #f0427f, #ff85b5); }
+.avatar-3 { background: linear-gradient(135deg, #e0306e, #ff6b9d); }
 
-    .avatar-1 {
-      background: linear-gradient(135deg, #ff6b9d, #ffb3d1);
-    }
+.friend-info { display: flex; flex-direction: column; gap: 6px; }
 
-    .avatar-2 {
-      background: linear-gradient(135deg, #f0427f, #ff85b5);
-    }
+.friend-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--deep);
+}
 
-    .avatar-3 {
-      background: linear-gradient(135deg, #e0306e, #ff6b9d);
-    }
+.pick-btn {
+  padding: 9px 18px;
+  border: none;
+  background: var(--pink);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+  width: fit-content;
+}
 
-    .friend-info {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+.pick-btn:hover { background: #e0306e; transform: scale(1.04); }
+.pick-btn:active { transform: scale(0.97); }
 
-    .friend-name {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--deep);
-    }
+.result-text {
+  font-size: 0.88rem;
+  color: #c4a0b0;
+  font-weight: 400;
+}
 
-    .pick-btn {
-      padding: 9px 18px;
-      border: none;
-      background: var(--pink);
-      color: white;
-      border-radius: 10px;
-      cursor: pointer;
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      transition: background 0.2s, transform 0.15s;
-      white-space: nowrap;
-      width: fit-content;
-    }
+.result-text .city-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--deep);
+  display: block;
+  margin-bottom: 4px;
+}
 
-    .pick-btn:hover {
-      background: #e0306e;
-      transform: scale(1.04);
-    }
+/* Map Links */
+.map-links { display: flex; gap: 6px; margin-top: 4px; }
 
-    .pick-btn:active {
-      transform: scale(0.97);
-    }
+.map-links a {
+  font-size: 0.72rem;
+  color: white !important;
+  text-decoration: none;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
 
-    .result-text {
-      font-size: 0.88rem;
-      color: #c4a0b0;
-      font-weight: 400;
-    }
+.map-links a:hover { opacity: 0.8; }
+.link-google { background: var(--pink); }
+.link-kakao { background: #f5c800; color: #4a1530 !important; }
 
-    .result-text .city-name {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--deep);
-      display: block;
-      margin-bottom: 4px;
-    }
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 24px;
+  animation: fadeUp 0.5s 0.4s ease both;
+}
 
-    /* Map Links */
-    .map-links {
-      display: flex;
-      gap: 6px;
-      margin-top: 4px;
-    }
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,107,157,0.2);
+}
 
-    .map-links a {
-      font-size: 0.72rem;
-      color: white !important;
-      text-decoration: none;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-weight: 500;
-      transition: opacity 0.2s;
-    }
+.divider span {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--pink-light);
+  font-weight: 500;
+}
 
-    .map-links a:hover {
-      opacity: 0.8;
-    }
+/* Result Cards */
+.result-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeUp 0.5s 0.5s ease both;
+}
 
-    .link-google {
-      background: var(--pink);
-    }
+.result-card {
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 2px 16px var(--shadow);
+}
 
-    .link-kakao {
-      background: #f5c800;
-      color: #4a1530 !important;
-    }
+.result-card.highlight { background: var(--pink); }
 
-    /* Divider */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin: 8px 0 24px;
-      animation: fadeUp 0.5s 0.4s ease both;
-    }
+.card-label {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #c47a99;
+}
 
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 107, 157, 0.2);
-    }
+.result-card.highlight .card-label { color: rgba(255,255,255,0.7); }
 
-    .divider span {
-      font-size: 0.72rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--pink-light);
-      font-weight: 500;
-    }
+.card-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--deep);
+  line-height: 1.6;
+}
 
-    /* Result Cards */
-    .result-section {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      animation: fadeUp 0.5s 0.5s ease both;
-    }
+.result-card.highlight .card-value { color: white; }
 
-    .result-card {
-      background: white;
-      border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 2px 16px var(--shadow);
-    }
+.card-value .big { font-size: 1.3rem; display: block; margin-bottom: 8px; }
 
-    .result-card.highlight {
-      background: var(--pink);
-    }
+/* Roulette */
+.roulette-wrap {
+  overflow: hidden;
+  height: 36px;
+  position: relative;
+}
 
-    .card-label {
-      font-size: 0.7rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 500;
-      margin-bottom: 12px;
-      color: #c47a99;
-    }
+.roulette-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0s;
+}
 
-    .result-card.highlight .card-label {
-      color: rgba(255, 255, 255, 0.7);
-    }
+.roulette-strip.spinning {
+  transition: transform 1.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
 
-    .card-value {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--deep);
-      line-height: 1.6;
-    }
+.roulette-item {
+  height: 36px;
+  line-height: 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--deep);
+  white-space: nowrap;
+}
 
-    .result-card.highlight .card-value {
-      color: white;
-    }
+.result-text.rolling .city-name {
+  display: none;
+}
 
-    .card-value .big {
-      font-size: 1.3rem;
-      display: block;
-      margin-bottom: 8px;
-    }
+/* Nearby */
+.nearby-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,107,157,0.1);
+}
+.nearby-item:last-child { border-bottom: none; }
 
-    /* Route links */
-    .route-links {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
+.nearby-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--pink);
+  flex-shrink: 0;
+}
 
-    .route-links a {
-      font-size: 0.8rem;
-      color: white !important;
-      text-decoration: none;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-weight: 500;
-      transition: opacity 0.2s;
-    }
+.nearby-item a {
+  color: var(--deep);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.nearby-item a:hover { color: var(--pink); }
 
-    .route-links a:hover {
-      opacity: 0.8;
-    }
+/* Animations */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop {
+  0% { transform: scale(0.9); opacity: 0; }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.pop { animation: pop 0.35s ease both; }
 
-    .link-route-google {
-      background: var(--pink);
-    }
-
-    .link-route-kakao {
-      background: #f5c800;
-      color: #4a1530 !important;
-    }
-
-    /* Nearby */
-    .nearby-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 0;
-      border-bottom: 1px solid rgba(255, 107, 157, 0.1);
-    }
-
-    .nearby-item:last-child {
-      border-bottom: none;
-    }
-
-    .nearby-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--pink);
-      flex-shrink: 0;
-    }
-
-    .nearby-item a {
-      color: var(--deep);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
-
-    .nearby-item a:hover {
-      color: var(--pink);
-    }
-
-    /* Animations */
-    @keyframes fadeDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes pop {
-      0% {
-        transform: scale(0.9);
-        opacity: 0;
-      }
-
-      60% {
-        transform: scale(1.05);
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .pop {
-      animation: pop 0.35s ease both;
-    }
-  </style>
+</style>
 </head>
-
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="header">
-      <h1>Where <span>to</span> Go?</h1>
-      <p>세 친구의 중간 여행지 찾기</p>
-      <img src="main.png" class="header-img" alt="여행">
+  <div class="header">
+    <h1>Where <span>to</span> Go?</h1>
+    <p>세 친구의 중간 여행지 찾기</p>
+    <img src="main.png" class="header-img" alt="여행">
+  </div>
+
+  <div class="friends-section">
+
+    <div class="friend-card">
+      <div class="friend-avatar avatar-1">챈</div>
+      <div class="friend-info">
+        <div class="friend-name">채니</div>
+        <button class="pick-btn" onclick="pickFriend(1)">Where? ✦</button>
+      </div>
+      <div class="result-text" id="r1">아직 미정</div>
     </div>
 
-    <div class="friends-section">
-
-      <div class="friend-card">
-        <div class="friend-avatar avatar-1">챈</div>
-        <div class="friend-info"> 
-          <div class="friend-name">채니</div>
-          <button class="pick-btn" onclick="pickFriend(1)">Where? ✦</button>
-        </div>
-        <div class="result-text" id="r1">아직 미정</div>
+    <div class="friend-card">
+      <div class="friend-avatar avatar-2">젼</div>
+      <div class="friend-info">
+        <div class="friend-name">져니</div>
+        <button class="pick-btn" onclick="pickFriend(2)">Where? ✦</button>
       </div>
-
-      <div class="friend-card">
-        <div class="friend-avatar avatar-2">젼</div>
-        <div class="friend-info">
-          <div class="friend-name">져니</div>
-          <button class="pick-btn" onclick="pickFriend(2)">Where? ✦</button>
-        </div>
-        <div class="result-text" id="r2">아직 미정</div>
-      </div>
-
-      <div class="friend-card">
-        <div class="friend-avatar avatar-3">션</div>
-        <div class="friend-info">
-          <div class="friend-name">셔니</div>
-          <button class="pick-btn" onclick="pickFriend(3)">Where? ✦</button>
-        </div>
-        <div class="result-text" id="r3">아직 미정</div>
-      </div>
-
+      <div class="result-text" id="r2">아직 미정</div>
     </div>
 
-    <div class="divider"><span>결과</span></div>
-
-    <div class="result-section">
-
-      <div class="result-card highlight">
-        <div class="card-label">📍 중간 여행지</div>
-        <div class="card-value" id="middle">-</div>
+    <div class="friend-card">
+      <div class="friend-avatar avatar-3">션</div>
+      <div class="friend-info">
+        <div class="friend-name">셔니</div>
+        <button class="pick-btn" onclick="pickFriend(3)">Where? ✦</button>
       </div>
+      <div class="result-text" id="r3">아직 미정</div>
     </div>
 
   </div>
-  <script>
 
-    let cities = [];
+  <div class="divider"><span>결과</span></div>
 
-    // cities.json 로드
-    async function loadCities() {
-      const res = await fetch("cities.json");
-      cities = await res.json();
-    }
+  <div class="result-section">
 
-    loadCities();
+    <div class="result-card highlight">
+      <div class="card-label">📍 중간 여행지</div>
+      <div class="card-value" id="middle">-</div>
+    </div>
 
-    const friendData = { 1: null, 2: null, 3: null };
-    const resultIds = { 1: "r1", 2: "r2", 3: "r3" };
+  </div>
 
-    // 지도 링크
-    function mapLinks(city) {
-      const google = `https://www.google.com/maps/search/?api=1&query=${city.lat},${city.lng}`;
-      const kakao = `https://map.kakao.com/link/map/${city.name},${city.lat},${city.lng}`;
-      return `<div class="map-links">
+</div>
+
+<script>
+
+let cities = [];
+const friendData = { 1: null, 2: null, 3: null };
+const resultIds = { 1: "r1", 2: "r2", 3: "r3" };
+const spinning = { 1: false, 2: false, 3: false };
+
+async function loadCities() {
+  const res = await fetch("cities.json");
+  cities = await res.json();
+}
+loadCities();
+
+function mapLinks(city) {
+  const google = `https://www.google.com/maps/search/?api=1&query=${city.lat},${city.lng}`;
+  const kakao = `https://map.kakao.com/link/map/${city.name},${city.lat},${city.lng}`;
+  return `<div class="map-links">
     <a href="${google}" target="_blank" class="link-google">Google</a>
     <a href="${kakao}" target="_blank" class="link-kakao">Kakao</a>
   </div>`;
-    }
+}
 
-    // 친구 랜덤 위치
-    async function pickFriend(n) {
+function pickFriend(n) {
+  if (cities.length === 0) { alert("도시 목록 로딩 중이에요. 잠깐만요!"); return; }
+  if (spinning[n]) return;
+  spinning[n] = true;
 
-      if (cities.length === 0) return;
+  const finalCity = cities[Math.floor(Math.random() * cities.length)];
+  const el = document.getElementById(resultIds[n]);
 
-      const city = cities[Math.floor(Math.random() * cities.length)];
+  // 룰렛용 도시 목록 만들기 (랜덤 20개 + 마지막에 최종 도시)
+  const decoys = Array.from({length: 20}, () => cities[Math.floor(Math.random() * cities.length)]);
+  const allItems = [...decoys, finalCity];
+  const itemH = 36;
 
-      friendData[n] = city;
+  el.innerHTML = `<div class="roulette-wrap"><div class="roulette-strip" id="strip${n}">
+    ${allItems.map(c => `<div class="roulette-item">${c.name}</div>`).join('')}
+  </div></div>`;
 
-      const el = document.getElementById(resultIds[n]);
+  const strip = document.getElementById(`strip${n}`);
 
-      el.innerHTML =
-        `<span class="city-name">${city.name}</span>
-  ${mapLinks(city)}`;
+  // 초기 위치 맨 위
+  strip.style.transform = `translateY(0px)`;
 
-      el.classList.remove("pop");
-      void el.offsetWidth;
-      el.classList.add("pop");
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      strip.classList.add('spinning');
+      strip.style.transform = `translateY(-${itemH * 20}px)`;
+    });
+  });
 
-      updateMiddle();
-    }
+  strip.addEventListener('transitionend', () => {
+    friendData[n] = finalCity;
+    el.innerHTML = `<span class="city-name">${finalCity.name}</span>${mapLinks(finalCity)}`;
+    el.classList.remove("pop");
+    void el.offsetWidth;
+    el.classList.add("pop");
+    spinning[n] = false;
+    updateMiddle();
+  }, { once: true });
+}
 
-    // 중간지 계산
-    function updateMiddle() {
+function updateMiddle() {
+  if (!friendData[1] || !friendData[2] || !friendData[3]) return;
 
-      if (!friendData[1] || !friendData[2] || !friendData[3]) return;
+  const lat = (friendData[1].lat + friendData[2].lat + friendData[3].lat) / 3;
+  const lng = (friendData[1].lng + friendData[2].lng + friendData[3].lng) / 3;
 
-      const lat =
-        (friendData[1].lat +
-          friendData[2].lat +
-          friendData[3].lat) / 3;
+  let best = null, minD = 999999;
+  cities.forEach(c => {
+    const d = Math.sqrt((lat - c.lat) ** 2 + (lng - c.lng) ** 2);
+    if (d < minD) { minD = d; best = c; }
+  });
 
-      const lng =
-        (friendData[1].lng +
-          friendData[2].lng +
-          friendData[3].lng) / 3;
+  const midEl = document.getElementById("middle");
+  midEl.innerHTML = `<span class="big">${best.name}</span>${mapLinks(best)}`;
+  midEl.classList.remove("pop");
+  void midEl.offsetWidth;
+  midEl.classList.add("pop");
+}
 
-      let best = null;
-      let minD = 999999;
-
-      cities.forEach(c => {
-
-        const d =
-          Math.sqrt(
-            Math.pow(lat - c.lat, 2) +
-            Math.pow(lng - c.lng, 2)
-          );
-
-        if (d < minD) {
-          minD = d;
-          best = c;
-        }
-
-      });
-
-      const el = document.getElementById("middle");
-
-      el.innerHTML =
-        `<span class="big">${best.name}</span>
-  ${mapLinks(best)}
-  ${routeLinks(best)}`;
-
-      el.classList.remove("pop");
-      void el.offsetWidth;
-      el.classList.add("pop");
-
-    }
-
-  </script>
+</script>
 </body>
-
 </html>
-

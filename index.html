@@ -102,233 +102,108 @@
   </div>
 
 
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0cb518c4181aa3da5d45befafb532d7b&libraries=services"></script>
+  <script
+    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0cb518c4181aa3da5d45befafb532d7b&libraries=services"></script>
 
   <script>
+    kakao.maps.load(function () {
+      const geocoder = new kakao.maps.services.Geocoder();
+      const places = new kakao.maps.services.Places();
 
-    const geocoder = new kakao.maps.services.Geocoder();
-    const places = new kakao.maps.services.Places();
+      let map;
 
-    let map;
+      let markers = [];
 
-    let markers = [];
+      const friendData = {
+        1: null,
+        2: null,
+        3: null
+      };
 
-    const friendData = {
-      1: null,
-      2: null,
-      3: null
-    };
+      function initMap() {
 
-    function initMap() {
+        const container = document.getElementById("map");
 
-      const container = document.getElementById("map");
-
-      map = new kakao.maps.Map(container, {
-        center: new kakao.maps.LatLng(36.5, 127.8),
-        level: 13
-      });
-
-    }
-
-    initMap();
-
-
-
-    const friendMarkerImage = new kakao.maps.MarkerImage(
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-      new kakao.maps.Size(24, 35)
-    );
-
-    const middleMarkerImage = new kakao.maps.MarkerImage(
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png",
-      new kakao.maps.Size(24, 35)
-    );
-
-    const cityMarkerImage = new kakao.maps.MarkerImage(
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_blue.png",
-      new kakao.maps.Size(24, 35)
-    );
-
-
-    function clearMarkers() {
-      markers.forEach(m => m.setMap(null));
-      markers = [];
-    }
-
-    function addMarker(lat, lng, image, text) {
-
-      const marker = new kakao.maps.Marker({
-        map: map,
-        position: new kakao.maps.LatLng(lat, lng),
-        image: image
-      });
-
-      markers.push(marker);
-
-      if (text) {
-
-        const info = new kakao.maps.InfoWindow({
-          content: `<div style="padding:5px;font-size:12px">${text}</div>`
+        map = new kakao.maps.Map(container, {
+          center: new kakao.maps.LatLng(36.5, 127.8),
+          level: 13
         });
-
-        info.open(map, marker);
 
       }
 
-    }
+      initMap();
 
 
-    function randomCoord() {
 
-      const lat = 33 + Math.random() * (38.6 - 33);
-      const lng = 126 + Math.random() * (129.6 - 126);
+      const friendMarkerImage = new kakao.maps.MarkerImage(
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+        new kakao.maps.Size(24, 35)
+      );
 
-      return { lat, lng };
+      const middleMarkerImage = new kakao.maps.MarkerImage(
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png",
+        new kakao.maps.Size(24, 35)
+      );
 
-    }
+      const cityMarkerImage = new kakao.maps.MarkerImage(
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_blue.png",
+        new kakao.maps.Size(24, 35)
+      );
 
 
-    function coordToAddress(lat, lng) {
+      function clearMarkers() {
+        markers.forEach(m => m.setMap(null));
+        markers = [];
+      }
 
-      return new Promise((resolve, reject) => {
+      function addMarker(lat, lng, image, text) {
 
-        geocoder.coord2Address(lng, lat, (result, status) => {
-
-          if (status === kakao.maps.services.Status.OK) {
-
-            const addr = result[0].road_address?.address_name || result[0].address.address_name;
-
-            resolve(addr);
-
-          } else {
-
-            reject();
-
-          }
-
+        const marker = new kakao.maps.Marker({
+          map: map,
+          position: new kakao.maps.LatLng(lat, lng),
+          image: image
         });
 
-      });
+        markers.push(marker);
 
-    }
+        if (text) {
 
+          const info = new kakao.maps.InfoWindow({
+            content: `<div style="padding:5px;font-size:12px">${text}</div>`
+          });
 
+          info.open(map, marker);
 
-    async function getRandomAddress() {
-
-      for (let i = 0; i < 15; i++) {
-
-        try {
-
-          const coord = randomCoord();
-          const address = await coordToAddress(coord.lat, coord.lng);
-
-          return {
-            lat: coord.lat,
-            lng: coord.lng,
-            address
-          };
-
-        } catch (e) { }
+        }
 
       }
 
-      throw "fail";
 
-    }
+      function randomCoord() {
 
+        const lat = 33 + Math.random() * (38.6 - 33);
+        const lng = 126 + Math.random() * (129.6 - 126);
 
+        return { lat, lng };
 
-    async function pickFriend(n) {
-
-      const el = document.getElementById("friend" + n);
-
-      el.innerText = "찾는중...";
-
-      try {
-
-        const data = await getRandomAddress();
-
-        friendData[n] = data;
-
-        el.innerText = data.address;
-
-        addMarker(data.lat, data.lng, friendMarkerImage, data.address);
-
-        updateMiddle();
-
-      } catch {
-
-        el.innerText = "실패 다시";
       }
 
-    }
 
+      function coordToAddress(lat, lng) {
 
+        return new Promise((resolve, reject) => {
 
-    async function updateMiddle() {
-
-      if (!friendData[1] || !friendData[2] || !friendData[3]) return;
-
-      const midLat = (friendData[1].lat + friendData[2].lat + friendData[3].lat) / 3;
-      const midLng = (friendData[1].lng + friendData[2].lng + friendData[3].lng) / 3;
-
-      const address = await coordToAddress(midLat, midLng);
-
-      document.getElementById("middle").innerText = address;
-
-      addMarker(midLat, midLng, middleMarkerImage, "중간지");
-
-      map.setCenter(new kakao.maps.LatLng(midLat, midLng));
-
-      findNearbyCities(midLat, midLng);
-
-    }
-
-
-
-    function findNearbyCities(lat, lng) {
-
-      places.keywordSearch("시청", (data, status) => {
-
-        if (status !== kakao.maps.services.Status.OK) return;
-
-        const cities = [];
-        const shown = new Set();
-
-        data.forEach(place => {
-
-          if (cities.length >= 3) return;
-
-          const addr = place.address_name;
-
-          const parts = addr.split(" ");
-
-          if (parts.length > 1) {
-
-            const city = parts[0] + " " + parts[1];
-
-            if (!shown.has(city)) {
-
-              shown.add(city);
-
-              cities.push(city);
-
-            }
-
-          }
-
-        });
-
-        document.getElementById("nearby").innerText = cities.join("\n");
-
-        cities.forEach(city => {
-
-          geocoder.addressSearch(city, (result, status) => {
+          geocoder.coord2Address(lng, lat, (result, status) => {
 
             if (status === kakao.maps.services.Status.OK) {
 
-              addMarker(result[0].y, result[0].x, cityMarkerImage, city);
+              const addr = result[0].road_address?.address_name || result[0].address.address_name;
+
+              resolve(addr);
+
+            } else {
+
+              reject();
 
             }
 
@@ -336,13 +211,139 @@
 
         });
 
-      }, {
-        location: new kakao.maps.LatLng(lat, lng),
-        radius: 20000
-      });
+      }
 
-    }
 
+
+      async function getRandomAddress() {
+
+        for (let i = 0; i < 15; i++) {
+
+          try {
+
+            const coord = randomCoord();
+            const address = await coordToAddress(coord.lat, coord.lng);
+
+            return {
+              lat: coord.lat,
+              lng: coord.lng,
+              address
+            };
+
+          } catch (e) { }
+
+        }
+
+        throw "fail";
+
+      }
+
+
+
+      async function pickFriend(n) {
+
+        const el = document.getElementById("friend" + n);
+
+        el.innerText = "찾는중...";
+
+        try {
+
+          const data = await getRandomAddress();
+
+          friendData[n] = data;
+
+          el.innerText = data.address;
+
+          addMarker(data.lat, data.lng, friendMarkerImage, data.address);
+
+          updateMiddle();
+
+        } catch {
+
+          el.innerText = "실패 다시";
+        }
+
+      }
+
+
+
+      async function updateMiddle() {
+
+        if (!friendData[1] || !friendData[2] || !friendData[3]) return;
+
+        const midLat = (friendData[1].lat + friendData[2].lat + friendData[3].lat) / 3;
+        const midLng = (friendData[1].lng + friendData[2].lng + friendData[3].lng) / 3;
+
+        const address = await coordToAddress(midLat, midLng);
+
+        document.getElementById("middle").innerText = address;
+
+        addMarker(midLat, midLng, middleMarkerImage, "중간지");
+
+        map.setCenter(new kakao.maps.LatLng(midLat, midLng));
+
+        findNearbyCities(midLat, midLng);
+
+      }
+
+
+
+      function findNearbyCities(lat, lng) {
+
+        places.keywordSearch("시청", (data, status) => {
+
+          if (status !== kakao.maps.services.Status.OK) return;
+
+          const cities = [];
+          const shown = new Set();
+
+          data.forEach(place => {
+
+            if (cities.length >= 3) return;
+
+            const addr = place.address_name;
+
+            const parts = addr.split(" ");
+
+            if (parts.length > 1) {
+
+              const city = parts[0] + " " + parts[1];
+
+              if (!shown.has(city)) {
+
+                shown.add(city);
+
+                cities.push(city);
+
+              }
+
+            }
+
+          });
+
+          document.getElementById("nearby").innerText = cities.join("\n");
+
+          cities.forEach(city => {
+
+            geocoder.addressSearch(city, (result, status) => {
+
+              if (status === kakao.maps.services.Status.OK) {
+
+                addMarker(result[0].y, result[0].x, cityMarkerImage, city);
+
+              }
+
+            });
+
+          });
+
+        }, {
+          location: new kakao.maps.LatLng(lat, lng),
+          radius: 20000
+        });
+
+      }
+    });
   </script>
 
 </body>

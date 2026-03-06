@@ -453,12 +453,6 @@
         <div class="card-label">📍 중간 여행지</div>
         <div class="card-value" id="middle">-</div>
       </div>
-
-      <div class="result-card">
-        <div class="card-label">🚆 영등포에서 가는 법</div>
-        <div class="card-value" id="route">-</div>
-      </div>
-
     </div>
 
   </div>
@@ -484,20 +478,6 @@
       return `<div class="map-links">
     <a href="${google}" target="_blank" class="link-google">Google</a>
     <a href="${kakao}" target="_blank" class="link-kakao">Kakao</a>
-  </div>`;
-    }
-
-    // 영등포에서 가는 길
-    function routeLinks(city) {
-      const google =
-        `https://www.google.com/maps/dir/37.5156,126.9070/${city.lat},${city.lng}`;
-
-      const kakao =
-        `https://map.kakao.com/link/from/영등포역,37.5156,126.9070/to/${city.name},${city.lat},${city.lng}`;
-
-      return `<div class="map-links">
-    <a href="${google}" target="_blank" class="link-google">Route</a>
-    <a href="${kakao}" target="_blank" class="link-kakao">Route</a>
   </div>`;
     }
 
@@ -573,3 +553,4 @@
 </body>
 
 </html>
+

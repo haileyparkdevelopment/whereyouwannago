@@ -85,9 +85,8 @@
       </div>
       <div id="map"></div>
     </div>
-    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0cb518c4181aa3da5d45befafb532d7b&libraries=services&autoload=false"></script>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0cb518c4181aa3da5d45befafb532d7b&libraries=services"></script>
     <script>
-      kakao.maps.load(function() {
         const geocoder = new kakao.maps.services.Geocoder();
         const places = new kakao.maps.services.Places();
         let map;
@@ -220,7 +219,6 @@
             radius: 20000
           });
         }
-      });
     </script>
   </body>
 </html>

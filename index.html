@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -323,7 +324,7 @@ body {
   <div class="friends-section">
 
     <div class="friend-card">
-      <div class="friend-avatar avatar-1">챈</div>
+      <div class="friend-avatar avatar-1">채</div>
       <div class="friend-info">
         <div class="friend-name">채니</div>
         <button class="pick-btn" onclick="pickFriend(1)">Where? ✦</button>
@@ -332,7 +333,7 @@ body {
     </div>
 
     <div class="friend-card">
-      <div class="friend-avatar avatar-2">젼</div>
+      <div class="friend-avatar avatar-2">져</div>
       <div class="friend-info">
         <div class="friend-name">져니</div>
         <button class="pick-btn" onclick="pickFriend(2)">Where? ✦</button>
@@ -341,7 +342,7 @@ body {
     </div>
 
     <div class="friend-card">
-      <div class="friend-avatar avatar-3">션</div>
+      <div class="friend-avatar avatar-3">셔</div>
       <div class="friend-info">
         <div class="friend-name">셔니</div>
         <button class="pick-btn" onclick="pickFriend(3)">Where? ✦</button>
@@ -439,10 +440,33 @@ function updateMiddle() {
   });
 
   const midEl = document.getElementById("middle");
-  midEl.innerHTML = `<span class="big">${best.name}</span>${mapLinks(best)}`;
-  midEl.classList.remove("pop");
-  void midEl.offsetWidth;
-  midEl.classList.add("pop");
+  const itemH = 42;
+
+  // 룰렛용 도시 목록 (랜덤 24개 + 최종 중간지)
+  const decoys = Array.from({length: 24}, () => cities[Math.floor(Math.random() * cities.length)]);
+  const allItems = [...decoys, best];
+
+  midEl.innerHTML = `<div class="roulette-wrap" style="height:${itemH}px"><div class="roulette-strip" id="strip-mid">
+    ${allItems.map(c => `<div class="roulette-item" style="height:${itemH}px;line-height:${itemH}px;font-size:1.2rem">${c.name}</div>`).join('')}
+  </div></div>`;
+
+  const strip = document.getElementById('strip-mid');
+  strip.style.transform = `translateY(0px)`;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      strip.classList.add('spinning');
+      strip.style.transition = 'transform 2.2s cubic-bezier(0.23, 1, 0.32, 1)';
+      strip.style.transform = `translateY(-${itemH * 24}px)`;
+    });
+  });
+
+  strip.addEventListener('transitionend', () => {
+    midEl.innerHTML = `<span class="big">${best.name}</span>${mapLinks(best)}`;
+    midEl.classList.remove("pop");
+    void midEl.offsetWidth;
+    midEl.classList.add("pop");
+  }, { once: true });
 }
 
 </script>

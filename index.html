@@ -267,7 +267,38 @@ body {
   display: none;
 }
 
-/* Nearby */
+/* Save Button */
+.save-btn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: white;
+  color: var(--pink);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 16px var(--shadow);
+  border: 2px solid var(--pink-light);
+  transition: all 0.2s;
+  animation: fadeUp 0.5s 0.6s ease both;
+  opacity: 1;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: var(--pink);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px var(--shadow);
+}
+
+.save-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
 .nearby-item {
   display: flex;
   align-items: center;
@@ -363,6 +394,8 @@ body {
 
   </div>
 
+  <button class="save-btn" id="saveBtn" onclick="saveImage()" disabled>📸 결과 이미지 저장</button>
+
 </div>
 
 <script>
@@ -426,7 +459,6 @@ function pickFriend(n) {
     updateMiddle();
   }, { once: true });
 }
-
 function updateMiddle() {
   if (!friendData[1] || !friendData[2] || !friendData[3]) return;
 
@@ -466,10 +498,36 @@ function updateMiddle() {
     midEl.classList.remove("pop");
     void midEl.offsetWidth;
     midEl.classList.add("pop");
+    document.getElementById("saveBtn").disabled = false;
   }, { once: true });
 }
 
+function saveImage() {
+  const btn = document.getElementById("saveBtn");
+  btn.textContent = "저장 중...";
+  btn.disabled = true;
+
+  // 링크 버튼 잠깐 숨기기 (캡처용)
+  const links = document.querySelectorAll(".map-links");
+  links.forEach(l => l.style.display = "none");
+
+  html2canvas(document.querySelector(".container"), {
+    backgroundColor: "#fff0f5",
+    scale: 2,
+    useCORS: true,
+    ignoreElements: el => el.id === "saveBtn"
+  }).then(canvas => {
+    links.forEach(l => l.style.display = "");
+    const a = document.createElement("a");
+    a.download = "여행지결과.png";
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+    btn.textContent = "📸 결과 이미지 저장";
+    btn.disabled = false;
+  });
+}
+
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
-

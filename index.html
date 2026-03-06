@@ -1,4 +1,4 @@
-
+.
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -394,8 +394,6 @@ body {
 
   </div>
 
-  <button class="save-btn" id="saveBtn" onclick="saveImage()" disabled>📸 결과 이미지 저장</button>
-
 </div>
 
 <script>
@@ -501,33 +499,8 @@ function updateMiddle() {
     document.getElementById("saveBtn").disabled = false;
   }, { once: true });
 }
-
-function saveImage() {
-  const btn = document.getElementById("saveBtn");
-  btn.textContent = "저장 중...";
-  btn.disabled = true;
-
-  // 링크 버튼 잠깐 숨기기 (캡처용)
-  const links = document.querySelectorAll(".map-links");
-  links.forEach(l => l.style.display = "none");
-
-  html2canvas(document.querySelector(".container"), {
-    backgroundColor: "#fff0f5",
-    scale: 2,
-    useCORS: true,
-    ignoreElements: el => el.id === "saveBtn"
-  }).then(canvas => {
-    links.forEach(l => l.style.display = "");
-    const a = document.createElement("a");
-    a.download = "여행지결과.png";
-    a.href = canvas.toDataURL("image/png");
-    a.click();
-    btn.textContent = "📸 결과 이미지 저장";
-    btn.disabled = false;
-  });
-}
-
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
+
